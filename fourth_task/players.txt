@@ -1,0 +1,13 @@
+0008 Stanley Johnson 22.01.2006 89 1 A-Club 2 B-Club fin fin
+0009 Christopher Norris 18.06.1986 0 1 D-Club 2 B-Club fin fin
+0010 Russell Frazier 26.08.2012 12 1 A-Flub 2 F-Club fin fin
+0011 John Montgomery 06.11.1987 22 1 G-Club 2 G-Club fin fin
+0012 Gary Dixon 19.09.1984 12 R-Club 2 1 S-Club fin fin
+0013 Milton Johnson 20.07.1982 3 1 Q-Club 2 G-Club fin fin
+0014 Albert Schmidt 08.07.1986 12 1 D-Club 2 D-Club fin fin
+0015 Michael Williams 20.04.2004 4 1 A-Club 2 A-Club fin fin
+0016 Christopher Bell 20.04.2002 3 1 F-Club 2 F-Club fin fin
+0017 Clarence Miller 20.04.2001 2 1 W-Club 2 W-Club fin fin
+0018 Karl Peters 20.04.2000 65 1 B-Club 2 B-Club fin fin
+0019 Chris Hill 31.05.1991 123 1 E-Club 2 N-Club fin fin
+0020 Kevin Boyd 31.05.1981 98 1 N-Club 2 N-Club fin fin
