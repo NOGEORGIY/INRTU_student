@@ -1,0 +1,88 @@
+-- Путь к библиотеке  
+function script_path()  
+    local str = debug.getinfo(2, "S").source:sub(2)  
+    return str:match("(.*/)")  
+end  
+
+local path = script_path() .. "/Lua/LuaFFT/src/?.lua"  
+package.path = package.path .. ";" .. path  
+
+luafft = require("luafft")  
+
+t = 1 -- Время (1 секунда)  
+sf = 10000 -- Частота дискретизации  
+
+f1 = {100} -- Частота для 1 сигнала  
+a1 = {1}   -- Амплитуда для 1 сигнала  
+
+f2 = {100, 300, 700} -- Частоты для 2 сигнала  
+a2 = {1, 1, 1}       -- Амплитуды для 2 сигнала  
+
+f3 = {100, 300, 700} -- Частоты для 3 сигнала  
+a3 = {3, 2, 1}       -- Амплитуды для 3 сигнала  
+
+-- Функция для генерации частотного сигнала  
+function freq_gen_without_FT(t, sf, f, a)  
+    local freq_m = {}  
+    local delta_time = 1 / sf  
+    for i = 0, sf - 1 do   
+        local sum = 0   
+        local t_value = i * delta_time   
+        for j = 1, #a do  
+            sum = sum + a[j] * math.cos(2 * math.pi * f[j] * t_value)  -- Включаем множитель 2 * pi  
+        end  
+        freq_m[#freq_m + 1] = sum  
+    end  
+    return freq_m  
+end  
+
+-- Генерация сигналов  
+real_freq1 = freq_gen_without_FT(t, sf, f1, a1)  
+real_freq2 = freq_gen_without_FT(t, sf, f2, a2)  
+real_freq3 = freq_gen_without_FT(t, sf, f3, a3)  
+
+-- Функция для преобразования сигнала в формат для FFT  
+function populate(input_signal)  
+    local output_list = {}  
+    for i = 1, #input_signal do  
+        output_list[i] = complex.new(input_signal[i], 0)  
+    end  
+    return output_list  
+end  
+
+-- Подготовка сигналов для FFT  
+signal1 = populate(real_freq1)  
+signal2 = populate(real_freq2)  
+signal3 = populate(real_freq3)  
+
+-- Выполнение преобразования Фурье  
+local spec1 = luafft.fft(signal1, false)  
+local spec2 = luafft.fft(signal2, false)  
+local spec3 = luafft.fft(signal3, false)  
+
+-- Функция для получения амплитуд из спектра  
+function get_amplitudes(spectrum)  
+    local amplitudes = {}  
+    for i = 1, #spectrum do  
+        amplitudes[i] = spectrum[i]:abs() -- Получаем модуль комплексных чисел  
+    end  
+    return amplitudes  
+end  
+
+-- Получение амплитуд для каждого спектра  
+amplitudes1 = get_amplitudes(spec1)  
+amplitudes2 = get_amplitudes(spec2)  
+amplitudes3 = get_amplitudes(spec3)  
+
+-- Функция для визуализации данных (вывод на консоль, может быть перенаправлено в файл)  
+function display(amplitudes, label)  
+    print(label)  
+    for i = 1, #amplitudes do   
+        print(string.format(amplitudes[i]))   
+    end  
+end  
+
+-- Визуализация амплитуд  
+display(amplitudes1, "Signal 1")  
+--display(amplitudes2, "Signal 2")  
+--display(amplitudes3, "Signal 3")  
